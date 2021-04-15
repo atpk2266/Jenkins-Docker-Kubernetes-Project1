@@ -3,20 +3,20 @@ node{
         git branch: 'main', credentialsId: 'GIT_CREDENTIALS', url: 'https://github.com/atpk2266/Jenkins-Docker-Kubernetes-Project1.git'
     }
     
-    stage('Maven Clean Package') {
+    stage('Build -Maven Clean Package,build docker image, push docker image') {
       def mavenHome =  tool name: "Maven", type: "maven"
       def mavenCMD = "${mavenHome}/bin/mvn"
       sh "${mavenCMD} clean package"
-    }
     
-    stage('Build Docker Image'){        
+    
+        
         sh "docker build -t atpk2266/jenkins-docker-k8s-project:${env.BUILD_ID} ."
-    }
+ 
     
-    stage('Push Docker Image'){
+    
         withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'DOCKER_HUB_CREDENTIALS')]) {
             sh "docker login -u atpk2266 -p ${DOCKER_HUB_CREDENTIALS}"
-        }
+        
         sh "docker push atpk2266/jenkins-docker-k8s-project:${env.BUILD_ID}"
     }
     
