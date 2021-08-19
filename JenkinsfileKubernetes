@@ -8,8 +8,7 @@ node{
       def mavenCMD = "${mavenHome}/bin/mvn"
       sh "${mavenCMD} clean package"
     
-    
-        
+     
         sh "docker build -t atpk2266/jenkins-docker-k8s-project:${env.BUILD_ID} ."
  
     
